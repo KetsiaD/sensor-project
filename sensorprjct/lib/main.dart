@@ -40,15 +40,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // use bgColor here w a late maybe
       appBar: AppBar(
 
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
+        color : bgColorT,
+        child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            
             // put thermostat here
             StreamBuilder<double>(
                 stream: environment.temperature,
@@ -82,8 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+    )
+  );
+}
 }
 
 class SecondRoute extends StatelessWidget {
@@ -97,7 +100,8 @@ class SecondRoute extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Today's Weather"),
       ),
-      body: Center(
+      body: Container(
+        child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -118,6 +122,7 @@ class SecondRoute extends StatelessWidget {
               child: const Text('Go back!'),
             )
           ])),
+    )
     );
   }
 }
