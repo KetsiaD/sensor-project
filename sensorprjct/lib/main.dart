@@ -37,15 +37,23 @@ class _MyHomePageState extends State<MyHomePage> {
   Color bgColorW = Colors.grey;
   IconData icon = Icons.thermostat;
 
+  Color temp_colorDecision(double temp){
+    if(temp>=26.6){
+      return Color.fromARGB(255, 237, 93, 27);
+    }else if(temp<=10){
+      return Color.fromARGB(255, 71, 129, 176);
+    }
+    return Color.fromARGB(255, 204, 189, 56);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: Text(widget.title),
       ),
       body: Container(
-        color : bgColorT,
+        //color : temp_colorDecision(temp_data),
         child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -57,9 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return CircularProgressIndicator();
                   return Text('The Current Temperature is: ${snapshot.data}');
-                  //(if snapshot.data >= 80.0) return Colors.Red; 
-                  //if snapshot.data <=55.0, return Colors.Blue;
-                  //else return Colors.Yellow;
                 }),
             StreamBuilder<double>(
                 stream: environment.humidity,
@@ -93,6 +98,15 @@ class SecondRoute extends StatelessWidget {
   SecondRoute({super.key});
 
   final environment = EnvironmentSensors();
+
+  Color baro_colorDecision(double pressure){
+    if(pressure>=1000){
+      return Color.fromARGB(255, 78, 77, 77);
+    }else if(pressure<=500){
+      return Color.fromARGB(249, 163, 160, 160);
+    }return Color.fromARGB(248, 197, 224, 108);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,6 +115,7 @@ class SecondRoute extends StatelessWidget {
         title: const Text("Today's Weather"),
       ),
       body: Container(
+        //color: baro_colorDecision(environment.pressure),
         child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -109,8 +124,17 @@ class SecondRoute extends StatelessWidget {
             StreamBuilder<double>(
                 stream: environment.pressure,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
-                  return Text('The Current Pressure is: ${snapshot.data}');
+                  if (!snapshot.hasData){ 
+                    return CircularProgressIndicator();
+                    }else if (snapshot.hasData){
+                      double? testing = snapshot.data;
+                      if (testing.){
+                      double testcase = testing.toDouble();
+                      }
+                      double.parse(testing);
+                      return Text("The Current Pressure is: ${snapshot.data}")
+                    }
+                    return Text('The Current Pressure is: ${snapshot.data}');
                   //if pressure > smth, return darkgrey and rainy icon
                   //if pressure < smth, return yellow and sunny icon
                   //else return cloudy icon and grey
