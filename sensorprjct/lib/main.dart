@@ -98,24 +98,24 @@ class SecondRoute extends StatelessWidget {
   SecondRoute({super.key});
 
   final environment = EnvironmentSensors();
+  double testcase = 0.0;
 
   Color baro_colorDecision(double pressure){
     if(pressure>=1000){
       return Color.fromARGB(255, 78, 77, 77);
     }else if(pressure<=500){
-      return Color.fromARGB(249, 163, 160, 160);
-    }return Color.fromARGB(248, 197, 224, 108);
+      return Color.fromARGB(248, 191, 201, 120);
+    }return Color.fromARGB(248, 233, 235, 228);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //use bgcolorW here w a late
       appBar: AppBar(
         title: const Text("Today's Weather"),
       ),
       body: Container(
-        //color: baro_colorDecision(environment.pressure),
+        color: baro_colorDecision(testcase),
         child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -128,13 +128,10 @@ class SecondRoute extends StatelessWidget {
                     return CircularProgressIndicator();
                     }else if (snapshot.hasData){
                       double? testing = snapshot.data;
-                      if (testing.){
-                      double testcase = testing.toDouble();
-                      }
-                      double.parse(testing);
-                      return Text("The Current Pressure is: ${snapshot.data}")
-                    }
-                    return Text('The Current Pressure is: ${snapshot.data}');
+                      if (testing!= null){
+                      testcase = testing.toDouble();
+                      }}
+                      return Text("The Current Pressure is: ${snapshot.data}");
                   //if pressure > smth, return darkgrey and rainy icon
                   //if pressure < smth, return yellow and sunny icon
                   //else return cloudy icon and grey
