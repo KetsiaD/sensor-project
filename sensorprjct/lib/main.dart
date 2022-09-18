@@ -34,7 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
   double temp = 0;
   final environment = EnvironmentSensors();
   Color bgColorT = Colors.orange;
-  Color bgColorW = Colors.grey;
   IconData icon = Icons.thermostat;
 
   Color temp_colorDecision(double temp){
@@ -94,11 +93,18 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 }
 
-class SecondRoute extends StatelessWidget {
+class SecondRoute extends StatefulWidget {
   SecondRoute({super.key});
+
+@override
+  State<SecondRoute> createState() => _SecondRouteState();
+}
+
+class _SecondRouteState extends State<SecondRoute>{
 
   final environment = EnvironmentSensors();
   double testcase = 0.0;
+  Color bgColorW = Colors.grey;
 
   Color baro_colorDecision(double pressure){
     if(pressure>=1000){
@@ -108,6 +114,8 @@ class SecondRoute extends StatelessWidget {
     }return Color.fromARGB(248, 233, 235, 228);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +123,7 @@ class SecondRoute extends StatelessWidget {
         title: const Text("Today's Weather"),
       ),
       body: Container(
-        color: baro_colorDecision(testcase),
+        color: bgColorW,
         child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -127,9 +135,10 @@ class SecondRoute extends StatelessWidget {
                   if (!snapshot.hasData){ 
                     return CircularProgressIndicator();
                     }else if (snapshot.hasData){
-                      double? testing = snapshot.data;
-                      if (testing!= null){
-                      testcase = testing.toDouble();
+                      double? baroPressure = snapshot.data;
+                      if (baroPressure!= null){
+                      testcase = baroPressure.toDouble();
+                        bgColorW = baro_colorDecision(testcase);
                       }}
                       return Text("The Current Pressure is: ${snapshot.data}");
                   //if pressure > smth, return darkgrey and rainy icon
