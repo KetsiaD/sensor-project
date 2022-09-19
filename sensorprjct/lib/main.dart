@@ -38,10 +38,10 @@ class _MyHomePageState extends State<MyHomePage>
   final environment = EnvironmentSensors();
   double tempNum = 15.0;
 
-  double _TempConvert(double temp) {
-    double tempf = (temp * (9 / 5)) + 32;
-    return tempf;
-  }
+  // double _TempConvert(double temp) {
+  //   double tempf = (temp * (9 / 5)) + 32;
+  //   return tempf;
+  // }
 
   Color temp_colorDecision(double temp) {
     if (temp >= 26.6) {
@@ -145,14 +145,14 @@ class SecondRoute extends StatefulWidget {
 }
 
 class _SecondRouteState extends State<SecondRoute>
-with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
   double baroNum = 0.0;
 
-@override
+  @override
   void initState() {
     super.initState();
     _animationController =
@@ -181,7 +181,6 @@ with SingleTickerProviderStateMixin {
     return Color.fromARGB(248, 233, 235, 228);
   }
 
-
   IconData baro_iconDecision(double pressure) {
     if (pressure >= 1000.00) {
       return Icons.thunderstorm;
@@ -189,16 +188,6 @@ with SingleTickerProviderStateMixin {
       return Icons.sunny;
     } else {
       return Icons.foggy;
-    }
-  }
-
-  Color icon_colorDesicion(double pressure) {
-    if (pressure >= 1000.00) {
-      return Colors.black;
-    } else if (pressure < 500) {
-      return Colors.yellow;
-    } else {
-      return Colors.blue;
     }
   }
 
@@ -214,14 +203,13 @@ with SingleTickerProviderStateMixin {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RotationTransition(
+                RotationTransition(
                     turns: Tween(begin: 0.0, end: -.25)
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
-                    child: Icon(baro_iconDecision(baroNum),
-                    //color: baro_colorDecision(baroNum),
-                    )
-                  ),
+                    child: Icon(
+                      baro_iconDecision(baroNum),
+                    )),
                 RaisedButton(
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
