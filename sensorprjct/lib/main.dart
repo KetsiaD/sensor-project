@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:environment_sensors/environment_sensors.dart';
-import 'package:weather_icons/weather_icons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -155,25 +154,11 @@ class _SecondRouteState extends State<SecondRoute> {
 
   IconData baro_iconDecision(double pressure) {
     if (pressure >= 1000.00) {
-      return WeatherIcons.day_sunny;
+      return Icons.sunny;
     } else if (pressure < 1000 && pressure >= 600) {
-      return WeatherIcons.rain_wind;
-    } else if (pressure < 600 && pressure >= 300) {
-      return WeatherIcons.snow;
+      return Icons.foggy;
     } else {
-      return WeatherIcons.snow_wind;
-    }
-  }
-
-  Color icon_colorDesicion(double pressure) {
-    if (pressure >= 1000.00) {
-      return Colors.yellow;
-    } else if (pressure < 1000 && pressure >= 600) {
-      return Colors.blue;
-    } else if (pressure < 600 && pressure >= 300) {
-      return Colors.white;
-    } else {
-      return Colors.lightBlueAccent;
+      return Icons.thunderstorm;
     }
   }
 
@@ -206,11 +191,7 @@ class _SecondRouteState extends State<SecondRoute> {
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
                     }),
-                Icon(baro_iconDecision(baroNum),
-                    color: icon_colorDesicion(baroNum)),
-                //color: baro_iconDecision(baroNum) == Icons.sunny
-                // ? Colors.yellow
-                // : Colors.blue),
+                Icon(baro_iconDecision(baroNum)),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
