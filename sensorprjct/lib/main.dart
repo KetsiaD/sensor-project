@@ -38,6 +38,11 @@ class _MyHomePageState extends State<MyHomePage>
   final environment = EnvironmentSensors();
   double tempNum = 15.0;
 
+  double _TempConvert(double temp) {
+    double tempf = (temp * (9 / 5)) + 32;
+    return tempf;
+  }
+
   Color temp_colorDecision(double temp) {
     if (temp >= 26.6) {
       return Color.fromARGB(255, 237, 93, 27);
@@ -176,6 +181,7 @@ with SingleTickerProviderStateMixin {
     return Color.fromARGB(248, 233, 235, 228);
   }
 
+
   IconData baro_iconDecision(double pressure) {
     if (pressure >= 1000.00) {
       return Icons.thunderstorm;
@@ -236,7 +242,6 @@ with SingleTickerProviderStateMixin {
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
                     }),
-
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
