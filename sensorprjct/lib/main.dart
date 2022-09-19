@@ -30,10 +30,13 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  double temp = 0;
+class _MyHomePageState extends State<MyHomePage>
+ with SingleTickerProviderStateMixin {
+  late AnimationController _animationController; 
+  bool isPlaying = false;
+
   final environment = EnvironmentSensors();
-  double tempNum = 0.0;
+  double tempNum = 15.0;
   IconData icon = Icons.thermostat;
 
   Color temp_colorDecision(double temp){
@@ -43,6 +46,25 @@ class _MyHomePageState extends State<MyHomePage> {
       return Color.fromARGB(255, 71, 129, 176);
     }
     return Color.fromARGB(255, 176, 161, 24);
+  }
+
+  @override
+  void initState(){
+  super.initState();
+  _animationController = 
+      AnimationController(vsync: this, duration:
+      Duration(milliseconds: 500));
+}
+void _runAnimation() async{
+  for(int i = 0; i<3; i++){
+    await _animationController.forward();
+    await _animationController.reverse();
+  }
+}
+@override
+  void dispose(){
+    super.dispose();
+    _animationController.dispose();
   }
 
   @override
@@ -67,8 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   }else if (snapshot.hasData){
                       double? tempReading = snapshot.data;
                       if (tempReading!= null){
-                      //tempNum = tempReading.toDouble();
-                      tempNum = 30.0;
+                      tempNum = tempReading.toDouble();
                       }}
                   return Text('The Current Temperature is: ${snapshot.data}');
                 }),
