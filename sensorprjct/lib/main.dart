@@ -184,7 +184,7 @@ class _SecondRouteState extends State<SecondRoute> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                Icon(baro_iconDecision(baroNum),
+                    Icon(baro_iconDecision(baroNum),
                     color: icon_colorDesicion(baroNum)),
                 //put Icon here and change/add the pressure tables
                 StreamBuilder<double>(
@@ -203,7 +203,7 @@ class _SecondRouteState extends State<SecondRoute> {
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
                     }),
-
+                    
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
