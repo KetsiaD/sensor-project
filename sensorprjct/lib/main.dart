@@ -12,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Weather App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Todays Temperature'),
+      home: const MyHomePage(title: "Today's Temperature"),
     );
   }
 }
@@ -24,67 +24,86 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  double temp = 0;
-  final environment = EnvironmentSensors();
+class _MyHomePageState extends State<MyHomePage>
+ with SingleTickerProviderStateMixin {
+  late AnimationController _animationController; 
+  bool isPlaying = false;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  final environment = EnvironmentSensors();
+  double tempNum = 15.0;
+
+  Color temp_colorDecision(double temp){
+    if(temp>=26.6){
+      return Color.fromARGB(255, 237, 93, 27);
+    }else if(temp<=10){
+      return Color.fromARGB(255, 71, 129, 176);
+    }
+    return Color.fromARGB(255, 176, 161, 24);
+  }
+
+  @override
+  void initState(){
+  super.initState();
+  _animationController = 
+      AnimationController(vsync: this, duration:
+      Duration(milliseconds: 500));
+}
+void _runAnimation() async{
+  for(int i = 0; i<3; i++){
+    await _animationController.forward();
+    await _animationController.reverse();
+  }
+}
+@override
+  void dispose(){
+    super.dispose();
+    _animationController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
+      body: Container(
+        color : temp_colorDecision(tempNum),
+        child: Center(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            RotationTransition(
+              turns: Tween(begin: 0.0, end: -.25)
+              .chain(CurveTween(curve: Curves.elasticIn))
+              .animate(_animationController),
+              child: Icon(Icons.thermostat)
+              ),
+              RaisedButton(child: Text("Run animation"),
+              onPressed: () => _runAnimation(),
+              ),
             StreamBuilder<double>(
                 stream: environment.temperature,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  }else if (snapshot.hasData){
+                      double? tempReading = snapshot.data;
+                      if (tempReading!= null){
+                      tempNum = tempReading.toDouble();
+                      }}
                   return Text('The Current Temperature is: ${snapshot.data}');
                 }),
             StreamBuilder<double>(
                 stream: environment.humidity,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData){  
+                  return CircularProgressIndicator();}
                   return Text('The Current Humidity is: ${snapshot.data}');
                 }),
             const SizedBox(
@@ -104,29 +123,58 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+    )
+  );
+}
 }
 
-class SecondRoute extends StatelessWidget {
+class SecondRoute extends StatefulWidget {
   SecondRoute({super.key});
 
+@override
+  State<SecondRoute> createState() => _SecondRouteState();
+}
+
+class _SecondRouteState extends State<SecondRoute>{
+
   final environment = EnvironmentSensors();
+  double baroNum = 0.0;
+
+  Color baro_colorDecision(double pressure){
+    if(pressure>=1000){
+      return Color.fromARGB(255, 78, 77, 77);
+    }else if(pressure<=500){
+      return Color.fromARGB(248, 191, 201, 120);
+    }return Color.fromARGB(248, 233, 235, 228);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todays Weather'),
+        title: const Text("Today's Weather"),
       ),
-      body: Center(
+      body: Container(
+        color: baro_colorDecision(baroNum),
+        child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+            //put Icon here and change/add the pressure tables
             StreamBuilder<double>(
                 stream: environment.pressure,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
-                  return Text('The Current Pressure is: ${snapshot.data}');
+                  if (!snapshot.hasData){ 
+                    return CircularProgressIndicator();
+                    }else if (snapshot.hasData){
+                      double? baroPressure = snapshot.data;
+                      if (baroPressure!= null){
+                        baroNum = baroPressure.toDouble();
+                      }}
+                      return Text("The Current Pressure is: ${snapshot.data}");
+                  //if pressure > smth, return darkgrey and rainy icon
+                  //if pressure < smth, return yellow and sunny icon
+                  //else return cloudy icon and grey
                 }),
             ElevatedButton(
               onPressed: () {
@@ -135,6 +183,7 @@ class SecondRoute extends StatelessWidget {
               child: const Text('Go back!'),
             )
           ])),
+    )
     );
   }
 }
