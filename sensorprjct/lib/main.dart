@@ -79,8 +79,15 @@ void _runAnimation() async{
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            
-            // put thermostat here
+            RotationTransition(
+              turns: Tween(begin: 0.0, end: -.25)
+              .chain(CurveTween(curve: Curves.elasticIn))
+              .animate(_animationController),
+              child: Icon(Icons.thermostat)
+              ),
+              RaisedButton(child: Text("Run animation"),
+              onPressed: () => _runAnimation(),
+              ),
             StreamBuilder<double>(
                 stream: environment.temperature,
                 builder: (context, snapshot) {
