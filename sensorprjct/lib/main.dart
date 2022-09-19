@@ -31,37 +31,43 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>
- with SingleTickerProviderStateMixin {
-  late AnimationController _animationController; 
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
   double tempNum = 15.0;
 
-  Color temp_colorDecision(double temp){
-    if(temp>=26.6){
+  double _TempConvert(double temp) {
+    double tempf = (temp * (9 / 5)) + 32;
+    return tempf;
+  }
+
+  Color temp_colorDecision(double temp) {
+    if (temp >= 26.6) {
       return Color.fromARGB(255, 237, 93, 27);
-    }else if(temp<=10){
+    } else if (temp <= 10) {
       return Color.fromARGB(255, 71, 129, 176);
     }
     return Color.fromARGB(255, 176, 161, 24);
   }
 
   @override
-  void initState(){
-  super.initState();
-  _animationController = 
-      AnimationController(vsync: this, duration:
-      Duration(milliseconds: 500));
-}
-void _runAnimation() async{
-  for(int i = 0; i<3; i++){
-    await _animationController.forward();
-    await _animationController.reverse();
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
   }
-}
-@override
-  void dispose(){
+
+  void _runAnimation() async {
+    for (int i = 0; i < 3; i++) {
+      await _animationController.forward();
+      await _animationController.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
     super.dispose();
     _animationController.dispose();
   }
@@ -69,121 +75,124 @@ void _runAnimation() async{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Container(
-        color : temp_colorDecision(tempNum),
-        child: Center(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RotationTransition(
-              turns: Tween(begin: 0.0, end: -.25)
-              .chain(CurveTween(curve: Curves.elasticIn))
-              .animate(_animationController),
-              child: Icon(Icons.thermostat)
-              ),
-              RaisedButton(child: Text("Run animation"),
-              onPressed: () => _runAnimation(),
-              ),
-            StreamBuilder<double>(
-                stream: environment.temperature,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return CircularProgressIndicator();
-                  }else if (snapshot.hasData){
-                      double? tempReading = snapshot.data;
-                      if (tempReading!= null){
-                      tempNum = tempReading.toDouble();
-                      }}
-                  return Text('The Current Temperature is: ${snapshot.data}');
-                }),
-            StreamBuilder<double>(
-                stream: environment.humidity,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData){  
-                  return CircularProgressIndicator();}
-                  return Text('The Current Humidity is: ${snapshot.data}');
-                }),
-            const SizedBox(
-              height: 50,
-            ),
-            Padding(
-                padding: EdgeInsets.only(bottom: 50, left: 250),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SecondRoute()),
-                      );
-                    },
-                    child: const Text("Next Screen"))),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-      // This trailing comma makes auto-formatting nicer for build methods.
-    )
-  );
-}
+        body: Container(
+          color: temp_colorDecision(tempNum),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RotationTransition(
+                    turns: Tween(begin: 0.0, end: -.25)
+                        .chain(CurveTween(curve: Curves.elasticIn))
+                        .animate(_animationController),
+                    child: Icon(Icons.thermostat)),
+                RaisedButton(
+                  child: Text("Run animation"),
+                  onPressed: () => _runAnimation(),
+                ),
+                StreamBuilder<double>(
+                    stream: environment.temperature,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasData) {
+                        double? tempReading = snapshot.data;
+                        if (tempReading != null) {
+                          tempNum = tempReading.toDouble();
+                        }
+                      }
+                      return Text(
+                          'The Current Temperature is: ${snapshot.data}');
+                    }),
+                StreamBuilder<double>(
+                    stream: environment.humidity,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      }
+                      return Text('The Current Humidity is: ${snapshot.data}');
+                    }),
+                const SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                    padding: EdgeInsets.only(bottom: 50, left: 250),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SecondRoute()),
+                          );
+                        },
+                        child: const Text("Next Screen"))),
+              ],
+            ),
+          ),
+          // This trailing comma makes auto-formatting nicer for build methods.
+        ));
+  }
 }
 
 class SecondRoute extends StatefulWidget {
   SecondRoute({super.key});
 
-@override
+  @override
   State<SecondRoute> createState() => _SecondRouteState();
 }
 
-class _SecondRouteState extends State<SecondRoute>{
-
+class _SecondRouteState extends State<SecondRoute> {
   final environment = EnvironmentSensors();
   double baroNum = 0.0;
 
-  Color baro_colorDecision(double pressure){
-    if(pressure>=1000){
+  Color baro_colorDecision(double pressure) {
+    if (pressure >= 1000) {
       return Color.fromARGB(255, 78, 77, 77);
-    }else if(pressure<=500){
+    } else if (pressure <= 500) {
       return Color.fromARGB(248, 191, 201, 120);
-    }return Color.fromARGB(248, 233, 235, 228);
+    }
+    return Color.fromARGB(248, 233, 235, 228);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Today's Weather"),
-      ),
-      body: Container(
-        color: baro_colorDecision(baroNum),
-        child: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-            //put Icon here and change/add the pressure tables
-            StreamBuilder<double>(
-                stream: environment.pressure,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData){ 
-                    return CircularProgressIndicator();
-                    }else if (snapshot.hasData){
-                      double? baroPressure = snapshot.data;
-                      if (baroPressure!= null){
-                        baroNum = baroPressure.toDouble();
-                      }}
+        appBar: AppBar(
+          title: const Text("Today's Weather"),
+        ),
+        body: Container(
+          color: baro_colorDecision(baroNum),
+          child: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                //put Icon here and change/add the pressure tables
+                StreamBuilder<double>(
+                    stream: environment.pressure,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasData) {
+                        double? baroPressure = snapshot.data;
+                        if (baroPressure != null) {
+                          baroNum = baroPressure.toDouble();
+                        }
+                      }
                       return Text("The Current Pressure is: ${snapshot.data}");
-                  //if pressure > smth, return darkgrey and rainy icon
-                  //if pressure < smth, return yellow and sunny icon
-                  //else return cloudy icon and grey
-                }),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Go back!'),
-            )
-          ])),
-    )
-    );
+                      //if pressure > smth, return darkgrey and rainy icon
+                      //if pressure < smth, return yellow and sunny icon
+                      //else return cloudy icon and grey
+                    }),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Go back!'),
+                )
+              ])),
+        ));
   }
 }
