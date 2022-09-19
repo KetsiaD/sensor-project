@@ -37,7 +37,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   final environment = EnvironmentSensors();
   double tempNum = 15.0;
-  IconData icon = Icons.thermostat;
 
   Color temp_colorDecision(double temp){
     if(temp>=26.6){
