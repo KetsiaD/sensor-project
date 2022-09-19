@@ -154,21 +154,21 @@ class _SecondRouteState extends State<SecondRoute> {
 
   IconData baro_iconDecision(double pressure) {
     if (pressure >= 1000.00) {
-      return Icons.sunny;
-    } else if (pressure < 1000 && pressure >= 600) {
-      return Icons.foggy;
-    } else {
       return Icons.thunderstorm;
+    } else if (pressure <= 500) {
+      return Icons.sunny;
+    } else {
+      return Icons.foggy;
     }
   }
 
   Color icon_colorDesicion(double pressure) {
     if (pressure >= 1000.00) {
-      return Colors.yellow;
-    } else if (pressure < 1000 && pressure >= 600) {
-      return Colors.blue;
-    } else {
       return Colors.black;
+    } else if (pressure <= 500) {
+      return Colors.yellow;
+    } else {
+      return Colors.blue;
     }
   }
 
@@ -184,6 +184,8 @@ class _SecondRouteState extends State<SecondRoute> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                Icon(baro_iconDecision(baroNum),
+                    color: icon_colorDesicion(baroNum)),
                 //put Icon here and change/add the pressure tables
                 StreamBuilder<double>(
                     stream: environment.pressure,
@@ -201,8 +203,7 @@ class _SecondRouteState extends State<SecondRoute> {
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
                     }),
-                Icon(baro_iconDecision(baroNum),
-                    color: icon_colorDesicion(baroNum)),
+
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
