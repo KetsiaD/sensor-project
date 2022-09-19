@@ -162,6 +162,16 @@ class _SecondRouteState extends State<SecondRoute> {
     }
   }
 
+  Color icon_colorDesicion(double pressure) {
+    if (pressure >= 1000.00) {
+      return Colors.yellow;
+    } else if (pressure < 1000 && pressure >= 600) {
+      return Colors.blue;
+    } else {
+      return Colors.black;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,7 +201,8 @@ class _SecondRouteState extends State<SecondRoute> {
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
                     }),
-                Icon(baro_iconDecision(baroNum)),
+                Icon(baro_iconDecision(baroNum),
+                    color: icon_colorDesicion(baroNum)),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
