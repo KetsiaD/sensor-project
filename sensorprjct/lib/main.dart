@@ -97,14 +97,14 @@ void _runAnimation() async{
                       if (tempReading!= null){
                       tempNum = tempReading.toDouble();
                       }}
-                  return Text('The Current Temperature is: ${snapshot.data}');
+                  return Text('The Current Temperature is: ${snapshot.data}°C');
                 }),
             StreamBuilder<double>(
                 stream: environment.humidity,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData){  
                   return CircularProgressIndicator();}
-                  return Text('The Current Humidity is: ${snapshot.data}');
+                  return Text('The Current Humidity is: ${snapshot.data}%');
                 }),
             const SizedBox(
               height: 50,
@@ -171,7 +171,7 @@ class _SecondRouteState extends State<SecondRoute>{
                       if (baroPressure!= null){
                         baroNum = baroPressure.toDouble();
                       }}
-                      return Text("The Current Pressure is: ${snapshot.data}");
+                      return Text("The Current Pressure is: ${snapshot.data}hPa");
                   //if pressure > smth, return darkgrey and rainy icon
                   //if pressure < smth, return yellow and sunny icon
                   //else return cloudy icon and grey
