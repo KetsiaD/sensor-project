@@ -144,17 +144,62 @@ class SecondRoute extends StatefulWidget {
   State<SecondRoute> createState() => _SecondRouteState();
 }
 
-class _SecondRouteState extends State<SecondRoute> {
+class _SecondRouteState extends State<SecondRoute>
+with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  bool isPlaying = false;
+
   final environment = EnvironmentSensors();
   double baroNum = 0.0;
+
+@override
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
+
+  void _runAnimation() async {
+    for (int i = 0; i < 3; i++) {
+      await _animationController.forward();
+      await _animationController.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
 
   Color baro_colorDecision(double pressure) {
     if (pressure >= 1000) {
       return Color.fromARGB(255, 78, 77, 77);
-    } else if (pressure <= 500) {
+    } else if (pressure < 500) {
       return Color.fromARGB(248, 191, 201, 120);
     }
     return Color.fromARGB(248, 233, 235, 228);
+  }
+
+
+  IconData baro_iconDecision(double pressure) {
+    if (pressure >= 1000.00) {
+      return Icons.thunderstorm;
+    } else if (pressure < 500) {
+      return Icons.sunny;
+    } else {
+      return Icons.foggy;
+    }
+  }
+
+  Color icon_colorDesicion(double pressure) {
+    if (pressure >= 1000.00) {
+      return Colors.black;
+    } else if (pressure < 500) {
+      return Colors.yellow;
+    } else {
+      return Colors.blue;
+    }
   }
 
   @override
@@ -169,7 +214,18 @@ class _SecondRouteState extends State<SecondRoute> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                //put Icon here and change/add the pressure tables
+                    RotationTransition(
+                    turns: Tween(begin: 0.0, end: -.25)
+                        .chain(CurveTween(curve: Curves.elasticIn))
+                        .animate(_animationController),
+                    child: Icon(baro_iconDecision(baroNum),
+                    //color: baro_colorDecision(baroNum),
+                    )
+                  ),
+                RaisedButton(
+                  child: Text("Run animation"),
+                  onPressed: () => _runAnimation(),
+                ),
                 StreamBuilder<double>(
                     stream: environment.pressure,
                     builder: (context, snapshot) {
