@@ -146,7 +146,7 @@ class _SecondRouteState extends State<SecondRoute> {
   Color baro_colorDecision(double pressure) {
     if (pressure >= 1000) {
       return Color.fromARGB(255, 78, 77, 77);
-    } else if (pressure <= 500) {
+    } else if (pressure < 500) {
       return Color.fromARGB(248, 191, 201, 120);
     }
     return Color.fromARGB(248, 233, 235, 228);
@@ -155,7 +155,7 @@ class _SecondRouteState extends State<SecondRoute> {
   IconData baro_iconDecision(double pressure) {
     if (pressure >= 1000.00) {
       return Icons.thunderstorm;
-    } else if (pressure <= 500) {
+    } else if (pressure < 500) {
       return Icons.sunny;
     } else {
       return Icons.foggy;
@@ -165,7 +165,7 @@ class _SecondRouteState extends State<SecondRoute> {
   Color icon_colorDesicion(double pressure) {
     if (pressure >= 1000.00) {
       return Colors.black;
-    } else if (pressure <= 500) {
+    } else if (pressure < 500) {
       return Colors.yellow;
     } else {
       return Colors.blue;
