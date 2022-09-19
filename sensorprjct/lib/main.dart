@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   double temp = 0;
   final environment = EnvironmentSensors();
-  Color bgColorT = Colors.orange;
+  double tempNum = 0.0;
   IconData icon = Icons.thermostat;
 
   Color temp_colorDecision(double temp){
@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }else if(temp<=10){
       return Color.fromARGB(255, 71, 129, 176);
     }
-    return Color.fromARGB(255, 204, 189, 56);
+    return Color.fromARGB(255, 176, 161, 24);
   }
 
   @override
@@ -52,9 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        //color : temp_colorDecision(temp_data),
+        color : temp_colorDecision(tempNum),
         child: Center(
-        child: Column(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             
@@ -62,13 +62,21 @@ class _MyHomePageState extends State<MyHomePage> {
             StreamBuilder<double>(
                 stream: environment.temperature,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  }else if (snapshot.hasData){
+                      double? tempReading = snapshot.data;
+                      if (tempReading!= null){
+                      //tempNum = tempReading.toDouble();
+                      tempNum = 30.0;
+                      }}
                   return Text('The Current Temperature is: ${snapshot.data}');
                 }),
             StreamBuilder<double>(
                 stream: environment.humidity,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData){  
+                  return CircularProgressIndicator();}
                   return Text('The Current Humidity is: ${snapshot.data}');
                 }),
             const SizedBox(
@@ -103,8 +111,7 @@ class SecondRoute extends StatefulWidget {
 class _SecondRouteState extends State<SecondRoute>{
 
   final environment = EnvironmentSensors();
-  double testcase = 0.0;
-  Color bgColorW = Colors.grey;
+  double baroNum = 0.0;
 
   Color baro_colorDecision(double pressure){
     if(pressure>=1000){
@@ -114,8 +121,6 @@ class _SecondRouteState extends State<SecondRoute>{
     }return Color.fromARGB(248, 233, 235, 228);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +128,7 @@ class _SecondRouteState extends State<SecondRoute>{
         title: const Text("Today's Weather"),
       ),
       body: Container(
-        color: bgColorW,
+        color: baro_colorDecision(baroNum),
         child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -137,8 +142,7 @@ class _SecondRouteState extends State<SecondRoute>{
                     }else if (snapshot.hasData){
                       double? baroPressure = snapshot.data;
                       if (baroPressure!= null){
-                      testcase = baroPressure.toDouble();
-                        bgColorW = baro_colorDecision(testcase);
+                        baroNum = baroPressure.toDouble();
                       }}
                       return Text("The Current Pressure is: ${snapshot.data}");
                   //if pressure > smth, return darkgrey and rainy icon
