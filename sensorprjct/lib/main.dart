@@ -139,9 +139,33 @@ class SecondRoute extends StatefulWidget {
   State<SecondRoute> createState() => _SecondRouteState();
 }
 
-class _SecondRouteState extends State<SecondRoute> {
+class _SecondRouteState extends State<SecondRoute>
+with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  bool isPlaying = false;
+
   final environment = EnvironmentSensors();
   double baroNum = 0.0;
+
+@override
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
+
+  void _runAnimation() async {
+    for (int i = 0; i < 3; i++) {
+      await _animationController.forward();
+      await _animationController.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
 
   Color baro_colorDecision(double pressure) {
     if (pressure >= 1000) {
@@ -184,9 +208,18 @@ class _SecondRouteState extends State<SecondRoute> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(baro_iconDecision(baroNum),
-                    color: icon_colorDesicion(baroNum)),
-                //put Icon here and change/add the pressure tables
+                    RotationTransition(
+                    turns: Tween(begin: 0.0, end: -.25)
+                        .chain(CurveTween(curve: Curves.elasticIn))
+                        .animate(_animationController),
+                    child: Icon(baro_iconDecision(baroNum),
+                    //color: baro_colorDecision(baroNum),
+                    )
+                  ),
+                RaisedButton(
+                  child: Text("Run animation"),
+                  onPressed: () => _runAnimation(),
+                ),
                 StreamBuilder<double>(
                     stream: environment.pressure,
                     builder: (context, snapshot) {
@@ -203,7 +236,7 @@ class _SecondRouteState extends State<SecondRoute> {
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
                     }),
-                    
+
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
