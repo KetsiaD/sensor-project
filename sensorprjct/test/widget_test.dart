@@ -19,9 +19,20 @@ void main() {
 
     await tester.tap(find.byKey(Key('SwitchKey')));
 
-    //await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump();
+    expect(find.byType(SecondRoute), findsOneWidget);
+  });
 
-    await tester.pump(); // Pump after every action to rebuild the widgets
+  testWidgets('Button on second screen goes back to first screen',
+      (tester) async {
+    await tester.pumpWidget(MaterialApp(home: SecondRoute()));
+
+    expect(find.byKey(const Key('2ndKey')), findsNWidgets(1));
+
+    await tester.tap(find.byKey(Key('2ndKey')));
+
+    await tester.pump();
     await tester.pump();
     expect(find.byType(SecondRoute), findsOneWidget);
   });
