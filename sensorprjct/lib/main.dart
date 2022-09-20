@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:environment_sensors/environment_sensors.dart';
 
@@ -36,12 +38,13 @@ class _MyHomePageState extends State<MyHomePage>
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
-  double tempNum = 15.0;
+  double tempNum = 15;
+  double humidity = 50;
 
-  double _TempConvert(double temp) {
-    double tempf = (temp * (9 / 5)) + 32;
-    return tempf;
-  }
+  // double _TempConvert(double temp) {
+  //   double tempf = (temp * (9 / 5)) + 32;
+  //   return tempf;
+  // }
 
   Color temp_colorDecision(double temp) {
     if (temp >= 26.6) {
@@ -89,13 +92,17 @@ class _MyHomePageState extends State<MyHomePage>
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
                     child: Icon((Icons.thermostat), size:150)),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
                 StreamBuilder<double>(
                     stream: environment.temperature,
+                    initialData: tempNum,
                     builder: (context, snapshot) {
+                      var snapshot2 = snapshot;
+                      print(snapshot2.data);
+
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                       } else if (snapshot.hasData) {
@@ -105,15 +112,19 @@ class _MyHomePageState extends State<MyHomePage>
                         }
                       }
                       return Text(
-                          'The Current Temperature is: ${snapshot.data}',textScaleFactor: 1.75);
+
+                          'The Current Temperature is: ${snapshot.data} degrees Celsius', textScaleFactor:1.75);
+
                     }),
                 StreamBuilder<double>(
                     stream: environment.humidity,
+                    initialData: humidity,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                       }
-                      return Text('The Current Humidity is: ${snapshot.data}', textScaleFactor: 1.75);
+
+                      return Text('The Current Humidity is: ${snapshot.data}%', textScaleFactor: 1.75);
                     }),
                 const SizedBox(
                   height: 50,
@@ -121,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage>
                 Padding(
                     padding: EdgeInsets.only(bottom: 50, left: 250),
                     child: ElevatedButton(
+                        key: Key("SwitchKey"),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -145,14 +157,14 @@ class SecondRoute extends StatefulWidget {
 }
 
 class _SecondRouteState extends State<SecondRoute>
-with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
-  double baroNum = 0.0;
+  double baroNum = 550;
 
-@override
+  @override
   void initState() {
     super.initState();
     _animationController =
@@ -181,7 +193,6 @@ with SingleTickerProviderStateMixin {
     return Color.fromARGB(248, 233, 235, 228);
   }
 
-
   IconData baro_iconDecision(double pressure) {
     if (pressure >= 1000.00) {
       return Icons.thunderstorm;
@@ -189,16 +200,6 @@ with SingleTickerProviderStateMixin {
       return Icons.sunny;
     } else {
       return Icons.foggy;
-    }
-  }
-
-  Color icon_colorDesicion(double pressure) {
-    if (pressure >= 1000.00) {
-      return Colors.black;
-    } else if (pressure < 500) {
-      return Colors.yellow;
-    } else {
-      return Colors.blue;
     }
   }
 
@@ -214,17 +215,17 @@ with SingleTickerProviderStateMixin {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RotationTransition(
+                RotationTransition(
                     turns: Tween(begin: 0.0, end: -.25)
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
+
                     child: Icon(baro_iconDecision(baroNum),
                             color: icon_colorDesicion(baroNum),
                             size: 150,
-                     // color: icon_colorDesicion(baroNum),
                     )
                   ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
@@ -245,6 +246,7 @@ with SingleTickerProviderStateMixin {
                       //else return cloudy icon and grey
                     }),
                 ElevatedButton(
+                  key: Key("2ndKey"),
                   onPressed: () {
                     Navigator.pop(context);
                   },
