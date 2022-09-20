@@ -202,6 +202,13 @@ class _SecondRouteState extends State<SecondRoute>
       return Icons.foggy;
     }
   }
+  Color icon_colorDecision(double pressure){
+    if(pressure >=1000){
+      return Colors.black;
+    }else if (pressure <500){
+      return Colors.yellow;
+    }return Colors.blue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +228,7 @@ class _SecondRouteState extends State<SecondRoute>
                         .animate(_animationController),
 
                     child: Icon(baro_iconDecision(baroNum),
-                            color: icon_colorDesicion(baroNum),
+                            color: icon_colorDecision(baroNum),
                             size: 150,
                     )
                   ),
