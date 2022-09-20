@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage>
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
                     child: Icon(Icons.thermostat)),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
@@ -121,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage>
                 Padding(
                     padding: EdgeInsets.only(bottom: 50, left: 250),
                     child: ElevatedButton(
+                        key: Key("SwitchKey"),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -209,8 +210,9 @@ class _SecondRouteState extends State<SecondRoute>
                         .animate(_animationController),
                     child: Icon(
                       baro_iconDecision(baroNum),
+                      //color: baro_colorDecision(baroNum),
                     )),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
