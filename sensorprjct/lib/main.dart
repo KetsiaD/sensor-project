@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:environment_sensors/environment_sensors.dart';
 
@@ -36,7 +38,8 @@ class _MyHomePageState extends State<MyHomePage>
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
-  double tempNum = 30.0;
+  double tempNum = 10.0;
+  double humidity = 50;
 
   // double _TempConvert(double temp) {
   //   double tempf = (temp * (9 / 5)) + 32;
@@ -95,7 +98,11 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 StreamBuilder<double>(
                     stream: environment.temperature,
+                    initialData: tempNum,
                     builder: (context, snapshot) {
+                      var snapshot2 = snapshot;
+                      print(snapshot2.data);
+
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                       } else if (snapshot.hasData) {
@@ -105,15 +112,16 @@ class _MyHomePageState extends State<MyHomePage>
                         }
                       }
                       return Text(
-                          'The Current Temperature is: ${snapshot.data}');
+                          'The Current Temperature is: ${snapshot.data} degrees Celsius');
                     }),
                 StreamBuilder<double>(
                     stream: environment.humidity,
+                    initialData: 50.0,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                       }
-                      return Text('The Current Humidity is: ${snapshot.data}');
+                      return Text('The Current Humidity is: ${snapshot.data}%');
                     }),
                 const SizedBox(
                   height: 50,
@@ -151,7 +159,7 @@ class _SecondRouteState extends State<SecondRoute>
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
-  double baroNum = 0.0;
+  double baroNum = 500;
 
   @override
   void initState() {
