@@ -36,4 +36,14 @@ void main() {
     await tester.pump();
     expect(find.byType(SecondRoute), findsOneWidget);
   });
+
+  testWidgets('Should find a foggy icon on the second screen',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+        const MaterialApp(home: MyHomePage(title: "Today's Temperature")));
+    await tester.tap(find.byKey(Key('SwitchKey')));
+    await tester.pump();
+    await tester.pump();
+    expect(find.byIcon(Icons.foggy), findsOneWidget);
+  });
 }
