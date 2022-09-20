@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage>
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
-  double tempNum = 15.0;
+  double tempNum = 30.0;
 
   // double _TempConvert(double temp) {
   //   double tempf = (temp * (9 / 5)) + 32;
