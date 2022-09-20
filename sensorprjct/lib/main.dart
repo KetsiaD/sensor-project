@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage>
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
-  double tempNum = 10.0;
+  double tempNum = 15;
   double humidity = 50;
 
   // double _TempConvert(double temp) {
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage>
                     }),
                 StreamBuilder<double>(
                     stream: environment.humidity,
-                    initialData: 50.0,
+                    initialData: humidity,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator();
@@ -159,7 +159,7 @@ class _SecondRouteState extends State<SecondRoute>
   bool isPlaying = false;
 
   final environment = EnvironmentSensors();
-  double baroNum = 500;
+  double baroNum = 550;
 
   @override
   void initState() {
