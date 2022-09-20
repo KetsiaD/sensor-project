@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage>
                     turns: Tween(begin: 0.0, end: -.25)
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
-                    child: Icon(Icons.thermostat)),
+                    child: Icon((Icons.thermostat), size:150)),
                 RaisedButton(
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage>
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                       }
-                      return Text('The Current Humidity is: ${snapshot.data}');
+                      return Text('The Current Humidity is: ${snapshot.data}', textScaleFactor: 1.75);
                     }),
                 const SizedBox(
                   height: 50,
@@ -213,7 +213,9 @@ with SingleTickerProviderStateMixin {
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
                     child: Icon(baro_iconDecision(baroNum),
-                    //color: baro_colorDecision(baroNum),
+                            color: icon_colorDesicion(baroNum),
+                            size: 150,
+                     // color: icon_colorDesicion(baroNum),
                     )
                   ),
                 RaisedButton(
@@ -231,7 +233,7 @@ with SingleTickerProviderStateMixin {
                           baroNum = baroPressure.toDouble();
                         }
                       }
-                      return Text("The Current Pressure is: ${snapshot.data}");
+                      return Text("The Current Pressure is: ${snapshot.data}", textScaleFactor: 1.75);
                       //if pressure > smth, return darkgrey and rainy icon
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
