@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:environment_sensors/environment_sensors.dart';
 
@@ -48,18 +46,18 @@ class _MyHomePageState extends State<MyHomePage>
 
   Color temp_colorDecision(double temp) {
     if (temp >= 26.6) {
-      return Color.fromARGB(255, 237, 93, 27);
+      return const Color.fromARGB(255, 237, 93, 27);
     } else if (temp <= 10) {
-      return Color.fromARGB(255, 71, 129, 176);
+      return const Color.fromARGB(255, 71, 129, 176);
     }
-    return Color.fromARGB(255, 176, 161, 24);
+    return const Color.fromARGB(255, 176, 161, 24);
   }
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
   }
 
   void _runAnimation() async {
@@ -88,14 +86,12 @@ class _MyHomePageState extends State<MyHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 RotationTransition(
-                    key: Key("Animation"),
                     turns: Tween(begin: 0.0, end: -.25)
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
-                    child: Icon((Icons.thermostat), size: 150)),
+                    child: const Icon((Icons.thermostat), size: 150)),
                 ElevatedButton(
-                  key: Key("TempAnimation"),
-                  child: Text("Run animation"),
+                  child: const Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
                 StreamBuilder<double>(
@@ -103,10 +99,10 @@ class _MyHomePageState extends State<MyHomePage>
                     initialData: tempNum,
                     builder: (context, snapshot) {
                       var snapshot2 = snapshot;
-                      print(snapshot2.data);
+                      (snapshot2.data);
 
                       if (!snapshot.hasData) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasData) {
                         double? tempReading = snapshot.data;
                         if (tempReading != null) {
@@ -114,15 +110,15 @@ class _MyHomePageState extends State<MyHomePage>
                         }
                       }
                       return Text(
-                          'The Current Temperature is: ${snapshot.data}°C',
-                          textScaleFactor: 1.73);
+                          'The Current Temperature is: ${snapshot.data} degrees Celsius',
+                          textScaleFactor: 1.75);
                     }),
                 StreamBuilder<double>(
                     stream: environment.humidity,
                     initialData: humidity,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
 
                       return Text('The Current Humidity is: ${snapshot.data}%',
@@ -132,14 +128,14 @@ class _MyHomePageState extends State<MyHomePage>
                   height: 50,
                 ),
                 Padding(
-                    padding: EdgeInsets.only(bottom: 50, left: 250),
+                    padding: const EdgeInsets.only(bottom: 50, left: 250),
                     child: ElevatedButton(
-                        key: Key("SwitchKey"),
+                        key: const Key("SwitchKey"),
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SecondRoute()),
+                                builder: (context) => const SecondRoute()),
                           );
                         },
                         child: const Text("Next Screen"))),
@@ -152,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage>
 }
 
 class SecondRoute extends StatefulWidget {
-  SecondRoute({super.key});
+  const SecondRoute({super.key});
 
   @override
   State<SecondRoute> createState() => _SecondRouteState();
@@ -169,8 +165,8 @@ class _SecondRouteState extends State<SecondRoute>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
   }
 
   void _runAnimation() async {
@@ -188,11 +184,11 @@ class _SecondRouteState extends State<SecondRoute>
 
   Color baro_colorDecision(double pressure) {
     if (pressure >= 1000) {
-      return Color.fromARGB(255, 78, 77, 77);
+      return const Color.fromARGB(255, 78, 77, 77);
     } else if (pressure < 500) {
-      return Color.fromARGB(248, 191, 201, 120);
+      return const Color.fromARGB(248, 191, 201, 120);
     }
-    return Color.fromARGB(248, 233, 235, 228);
+    return const Color.fromARGB(248, 233, 235, 228);
   }
 
   IconData baro_iconDecision(double pressure) {
@@ -236,15 +232,14 @@ class _SecondRouteState extends State<SecondRoute>
                       size: 150,
                     )),
                 ElevatedButton(
-                  key: Key("2ndAnimation"),
-                  child: Text("Run animation"),
+                  child: const Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
                 StreamBuilder<double>(
                     stream: environment.pressure,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasData) {
                         double? baroPressure = snapshot.data;
                         if (baroPressure != null) {
@@ -258,7 +253,7 @@ class _SecondRouteState extends State<SecondRoute>
                       //else return cloudy icon and grey
                     }),
                 ElevatedButton(
-                  key: Key("2ndKey"),
+                  key: const Key("2ndKey"),
                   onPressed: () {
                     Navigator.pop(context);
                   },

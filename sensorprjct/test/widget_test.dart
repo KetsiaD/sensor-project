@@ -17,7 +17,7 @@ void main() {
 
     expect(find.byKey(const Key('SwitchKey')), findsNWidgets(1));
 
-    await tester.tap(find.byKey(Key('SwitchKey')));
+    await tester.tap(find.byKey(const Key('SwitchKey')));
 
     await tester.pump();
     await tester.pump();
@@ -26,11 +26,11 @@ void main() {
 
   testWidgets('Button on second screen goes back to first screen',
       (tester) async {
-    await tester.pumpWidget(MaterialApp(home: SecondRoute()));
+    await tester.pumpWidget(const MaterialApp(home: SecondRoute()));
 
     expect(find.byKey(const Key('2ndKey')), findsNWidgets(1));
 
-    await tester.tap(find.byKey(Key('2ndKey')));
+    await tester.tap(find.byKey(const Key('2ndKey')));
 
     await tester.pump();
     await tester.pump();
@@ -41,7 +41,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
         const MaterialApp(home: MyHomePage(title: "Today's Temperature")));
-    await tester.tap(find.byKey(Key('SwitchKey')));
+    await tester.tap(find.byKey(const Key('SwitchKey')));
     await tester.pump();
     await tester.pump();
     expect(find.byIcon(Icons.foggy), findsOneWidget);
@@ -56,7 +56,7 @@ void main() {
 
   testWidgets('There is an animation button on the second screen',
       (tester) async {
-    await tester.pumpWidget(MaterialApp(home: SecondRoute()));
+    await tester.pumpWidget(const MaterialApp(home: SecondRoute()));
 
     expect(find.byKey(const Key('2ndAnimation')), findsNWidgets(1));
   });
