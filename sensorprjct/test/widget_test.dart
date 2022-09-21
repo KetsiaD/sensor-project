@@ -46,4 +46,18 @@ void main() {
     await tester.pump();
     expect(find.byIcon(Icons.foggy), findsOneWidget);
   });
+
+  testWidgets('Animation button exists on first screen', (tester) async {
+    await tester.pumpWidget(
+        const MaterialApp(home: MyHomePage(title: "Today's Temperature")));
+
+    expect(find.byKey(const Key('TempAnimation')), findsNWidgets(1));
+  });
+
+  testWidgets('There is an animation button on the second screen',
+      (tester) async {
+    await tester.pumpWidget(MaterialApp(home: SecondRoute()));
+
+    expect(find.byKey(const Key('2ndAnimation')), findsNWidgets(1));
+  });
 }

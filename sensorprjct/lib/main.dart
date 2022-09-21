@@ -88,11 +88,13 @@ class _MyHomePageState extends State<MyHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 RotationTransition(
+                    key: Key("Animation"),
                     turns: Tween(begin: 0.0, end: -.25)
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
-                    child: Icon((Icons.thermostat), size:150)),
+                    child: Icon((Icons.thermostat), size: 150)),
                 ElevatedButton(
+                  key: Key("TempAnimation"),
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
@@ -112,9 +114,8 @@ class _MyHomePageState extends State<MyHomePage>
                         }
                       }
                       return Text(
-
-                          'The Current Temperature is: ${snapshot.data} degrees Celsius', textScaleFactor:1.75);
-
+                          'The Current Temperature is: ${snapshot.data} degrees Celsius',
+                          textScaleFactor: 1.75);
                     }),
                 StreamBuilder<double>(
                     stream: environment.humidity,
@@ -124,7 +125,8 @@ class _MyHomePageState extends State<MyHomePage>
                         return CircularProgressIndicator();
                       }
 
-                      return Text('The Current Humidity is: ${snapshot.data}%', textScaleFactor: 1.75);
+                      return Text('The Current Humidity is: ${snapshot.data}%',
+                          textScaleFactor: 1.75);
                     }),
                 const SizedBox(
                   height: 50,
@@ -202,12 +204,14 @@ class _SecondRouteState extends State<SecondRoute>
       return Icons.foggy;
     }
   }
-  Color icon_colorDecision(double pressure){
-    if(pressure >=1000){
+
+  Color icon_colorDecision(double pressure) {
+    if (pressure >= 1000) {
       return Colors.black;
-    }else if (pressure <500){
+    } else if (pressure < 500) {
       return Colors.yellow;
-    }return Colors.blue;
+    }
+    return Colors.blue;
   }
 
   @override
@@ -226,13 +230,13 @@ class _SecondRouteState extends State<SecondRoute>
                     turns: Tween(begin: 0.0, end: -.25)
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
-
-                    child: Icon(baro_iconDecision(baroNum),
-                            color: icon_colorDecision(baroNum),
-                            size: 150,
-                    )
-                  ),
+                    child: Icon(
+                      baro_iconDecision(baroNum),
+                      color: icon_colorDecision(baroNum),
+                      size: 150,
+                    )),
                 ElevatedButton(
+                  key: Key("2ndAnimation"),
                   child: Text("Run animation"),
                   onPressed: () => _runAnimation(),
                 ),
@@ -247,7 +251,8 @@ class _SecondRouteState extends State<SecondRoute>
                           baroNum = baroPressure.toDouble();
                         }
                       }
-                      return Text("The Current Pressure is: ${snapshot.data}", textScaleFactor: 1.75);
+                      return Text("The Current Pressure is: ${snapshot.data}",
+                          textScaleFactor: 1.75);
                       //if pressure > smth, return darkgrey and rainy icon
                       //if pressure < smth, return yellow and sunny icon
                       //else return cloudy icon and grey
