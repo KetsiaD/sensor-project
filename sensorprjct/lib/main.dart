@@ -114,8 +114,8 @@ class _MyHomePageState extends State<MyHomePage>
                         }
                       }
                       return Text(
-                          'The Current Temperature is: ${snapshot.data} degrees Celsius',
-                          textScaleFactor: 1.75);
+                          'The Current Temperature is: ${snapshot.data}°C',
+                          textScaleFactor: 1.73);
                     }),
                 StreamBuilder<double>(
                     stream: environment.humidity,
