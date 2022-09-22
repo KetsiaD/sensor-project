@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage>
   double tempNum = 15;
   double humidity = 50;
 
+//logic for handling color decisions
   Color temp_colorDecision(double temp) {
     if (temp >= 26.6) {
       return const Color.fromARGB(255, 237, 93, 27);
@@ -49,13 +50,15 @@ class _MyHomePageState extends State<MyHomePage>
     return const Color.fromARGB(255, 176, 161, 24);
   }
 
+//initializes animated icons
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
   }
 
+//simple looping of animated icons
   void _runAnimation() async {
     for (int i = 0; i < 3; i++) {
       await _animationController.forward();
@@ -63,12 +66,14 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 
+//stops animation
   @override
   void dispose() {
     super.dispose();
     _animationController.dispose();
   }
 
+//first screen for displaying the temperature
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +101,6 @@ class _MyHomePageState extends State<MyHomePage>
                     stream: environment.temperature,
                     initialData: tempNum,
                     builder: (context, snapshot) {
-
                       if (!snapshot.hasData) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasData) {
@@ -159,8 +163,8 @@ class _SecondRouteState extends State<SecondRoute>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
   }
 
   void _runAnimation() async {
@@ -176,6 +180,7 @@ class _SecondRouteState extends State<SecondRoute>
     _animationController.dispose();
   }
 
+//logic handling for pressure background color
   Color baro_colorDecision(double pressure) {
     if (pressure >= 1000) {
       return const Color.fromARGB(255, 78, 77, 77);
@@ -185,6 +190,7 @@ class _SecondRouteState extends State<SecondRoute>
     return const Color.fromARGB(248, 233, 235, 228);
   }
 
+//logic for determining weather icon
   IconData baro_iconDecision(double pressure) {
     if (pressure >= 1000.00) {
       return Icons.thunderstorm;
@@ -195,6 +201,7 @@ class _SecondRouteState extends State<SecondRoute>
     }
   }
 
+//logic for determining icon color
   Color icon_colorDecision(double pressure) {
     if (pressure >= 1000) {
       return Colors.black;
@@ -204,6 +211,7 @@ class _SecondRouteState extends State<SecondRoute>
     return Colors.blue;
   }
 
+//second screen for displaying the weather
   @override
   Widget build(BuildContext context) {
     return Scaffold(
