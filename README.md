@@ -1,6 +1,6 @@
 # sensor-project
 
-# Project3: Sensor Project
+# Project 3: Sensor Project
 
 ### DISCLAIMER: to update sensors and screens you have to hot reload
 
