@@ -113,13 +113,6 @@ class _WeatherPageState extends State<WeatherPage>
                       return Text("The Current Pressure is: ${snapshot.data}",
                           textScaleFactor: 1.75);
                     }),
-                ElevatedButton(
-                  key: const Key("2ndKey"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Go back!'),
-                )
               ])),
         ));
   }

@@ -51,11 +51,13 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.thermostat),
-            label: "Temp"
+            label: "Temperature",
+            tooltip: "Temperature and Humidity"
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.cloud),
-            label: "Weather"
+            label: "Weather",
+            tooltip: "Barometric Pressure"
           ),
         ],
         onTap: updateScreenIndex,

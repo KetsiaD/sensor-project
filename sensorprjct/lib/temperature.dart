@@ -115,18 +115,6 @@ class _MyHomePageState extends State<MyHomePage>
                 const SizedBox(
                   height: 50,
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 50, left: 250),
-                    child: ElevatedButton(
-                        key: const Key("SwitchKey"),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const WeatherPage()),
-                          );
-                        },
-                        child: const Text("Next Screen"))),
               ],
             ),
           ),
