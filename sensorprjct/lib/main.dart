@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'package:sensorprjct/temperature.dart';
 import 'package:flutter/material.dart';
-import 'package:environment_sensors/environment_sensors.dart';
 
 void main() {
   runApp(const MyApp());

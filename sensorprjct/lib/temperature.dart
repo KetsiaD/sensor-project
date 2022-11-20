@@ -22,9 +22,9 @@ class _MyHomePageState extends State<MyHomePage>
   double humidity = 50;
 
   //initialize temperature color
-  Color temp_color = Colors.grey;
+  Color tempColor = Colors.grey;
 //logic for handling color decisions
-  temp_colorDecision(double temp) {
+  tempColorDecision(double temp) {
     Color color;
     if (temp >= 26.6) {
       color = const Color.fromARGB(255, 237, 93, 27);
@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage>
       color = const Color.fromARGB(255, 176, 161, 24);
     }
     setState(() {
-      temp_color = color;
+      tempColor = color;
     });
   }
 
@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage>
           title: Text(widget.title),
         ),
         body: Container(
-          color: temp_color,
+          color: tempColor,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage>
                         if (tempReading != null) {
                           tempNum = tempReading.toDouble();
                           Future.delayed(Duration.zero, () async {
-                            temp_colorDecision(tempNum);
+                            tempColorDecision(tempNum);
                           });
                         }
                       }
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => WeatherPage()),
+                                builder: (context) => const WeatherPage()),
                           );
                         },
                         child: const Text("Next Screen"))),
