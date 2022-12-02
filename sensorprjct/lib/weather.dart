@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:environment_sensors/environment_sensors.dart';
 
 class WeatherPage extends StatefulWidget {
-  WeatherPage({super.key});
+  const WeatherPage({super.key});
 
   @override
   State<WeatherPage> createState() => _WeatherPageState();
@@ -39,33 +39,33 @@ class _WeatherPageState extends State<WeatherPage>
   }
 
   //initialize weather colors and icons
-  Color baro_color = Colors.grey;
-  IconData baro_icon = Icons.sunny;
-  Color baro_icon_color = Colors.grey;
+  Color baroColor = Colors.grey;
+  IconData baroIcon = Icons.sunny;
+  Color baroIconColor = Colors.grey;
 
   //dynamically updates the background color, weather icon, and weather icon color
   //this is determined using pressure sensor logic
-  baro_dynamicDecision(double pressure) {
-    Color bg_color;
+  baroDynamicDecision(double pressure) {
+    Color bgColor;
     IconData icon;
-    Color icon_color;
+    Color iconColor;
     if (pressure >= 1000) {
-      bg_color = const Color.fromARGB(255, 78, 77, 77);
+      bgColor = const Color.fromARGB(255, 78, 77, 77);
       icon = Icons.thunderstorm;
-      icon_color = Colors.black;
+      iconColor = Colors.black;
     } else if (pressure < 500) {
-      bg_color = const Color.fromARGB(248, 191, 201, 120);
+      bgColor = const Color.fromARGB(248, 191, 201, 120);
       icon = Icons.sunny;
-      icon_color = Colors.yellow;
+      iconColor = Colors.yellow;
     } else {
-      bg_color = const Color.fromARGB(248, 233, 235, 228);
+      bgColor = const Color.fromARGB(248, 233, 235, 228);
       icon = Icons.foggy;
-      icon_color = Colors.blue;
+      iconColor = Colors.blue;
     }
     setState(() {
-      baro_color = bg_color;
-      baro_icon = icon;
-      baro_icon_color = icon_color;
+      baroColor = bgColor;
+      baroIcon = icon;
+      baroIconColor = iconColor;
     });
   }
 
@@ -77,7 +77,7 @@ class _WeatherPageState extends State<WeatherPage>
           title: const Text("Today's Weather"),
         ),
         body: Container(
-          color: baro_color,
+          color: baroColor,
           child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -87,8 +87,8 @@ class _WeatherPageState extends State<WeatherPage>
                         .chain(CurveTween(curve: Curves.elasticIn))
                         .animate(_animationController),
                     child: Icon(
-                      baro_icon,
-                      color: baro_icon_color,
+                      baroIcon,
+                      color: baroIconColor,
                       size: 150,
                     )),
                 ElevatedButton(
@@ -106,20 +106,13 @@ class _WeatherPageState extends State<WeatherPage>
                         if (baroPressure != null) {
                           baroNum = baroPressure.toDouble();
                           Future.delayed(Duration.zero, () async {
-                            baro_dynamicDecision(baroNum);
+                            baroDynamicDecision(baroNum);
                           });
                         }
                       }
                       return Text("The Current Pressure is: ${snapshot.data}",
                           textScaleFactor: 1.75);
                     }),
-                ElevatedButton(
-                  key: const Key("2ndKey"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Go back!'),
-                )
               ])),
         ));
   }

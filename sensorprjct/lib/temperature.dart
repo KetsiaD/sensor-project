@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:environment_sensors/environment_sensors.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -22,9 +20,9 @@ class _MyHomePageState extends State<MyHomePage>
   double humidity = 50;
 
   //initialize temperature color
-  Color temp_color = Colors.grey;
+  Color tempColor = Colors.grey;
 //logic for handling color decisions
-  temp_colorDecision(double temp) {
+  tempColorDecision(double temp) {
     Color color;
     if (temp >= 26.6) {
       color = const Color.fromARGB(255, 237, 93, 27);
@@ -34,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage>
       color = const Color.fromARGB(255, 176, 161, 24);
     }
     setState(() {
-      temp_color = color;
+      tempColor = color;
     });
   }
 
@@ -66,10 +64,10 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: const Text("Today's Temperature"),
         ),
         body: Container(
-          color: temp_color,
+          color: tempColor,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage>
                         if (tempReading != null) {
                           tempNum = tempReading.toDouble();
                           Future.delayed(Duration.zero, () async {
-                            temp_colorDecision(tempNum);
+                            tempColorDecision(tempNum);
                           });
                         }
                       }
@@ -117,18 +115,6 @@ class _MyHomePageState extends State<MyHomePage>
                 const SizedBox(
                   height: 50,
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 50, left: 250),
-                    child: ElevatedButton(
-                        key: const Key("SwitchKey"),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WeatherPage()),
-                          );
-                        },
-                        child: const Text("Next Screen"))),
               ],
             ),
           ),
