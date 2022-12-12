@@ -113,6 +113,11 @@ class _WeatherPageState extends State<WeatherPage>
                       return Text("The Current Pressure is: ${snapshot.data}",
                           textScaleFactor: 1.75);
                     }),
+                ElevatedButton(
+                  key: const Key("RereshButton"),
+                  child: const Text("Refresh Sensor"),
+                  onPressed: () => _WeatherPageState(),
+                ),
               ])),
         ));
   }

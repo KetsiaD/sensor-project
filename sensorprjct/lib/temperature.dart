@@ -112,6 +112,11 @@ class _MyHomePageState extends State<MyHomePage>
                       return Text('The Current Humidity is: ${snapshot.data}%',
                           textScaleFactor: 1.75);
                     }),
+                ElevatedButton(
+                  key: const Key("RereshButton"),
+                  child: const Text("Refresh Sensor"),
+                  onPressed: () => _MyHomePageState(),
+                ),
                 const SizedBox(
                   height: 50,
                 ),
